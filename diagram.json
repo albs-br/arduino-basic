@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "author": "Uri Shaked",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": -346.03, "left": -231.85, "attrs": {} },
+    {
+      "type": "wokwi-lcd2004",
+      "id": "lcd",
+      "top": -128.3,
+      "left": -264.81,
+      "attrs": { "pins": "i2c", "background": "blue", "color": "white" }
+    },
+    {
+      "type": "wokwi-membrane-keypad",
+      "id": "keypad1",
+      "top": -893.46,
+      "left": -180.27,
+      "attrs": {
+        "keys": [ "Q", "W", "E", "R", "A", "S", "D", "F", "Z", "X", "C", "V", "bs", "sh", ",", "." ]
+      }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn1",
+      "top": -275.36,
+      "left": 234.98,
+      "attrs": { "color": "green" }
+    },
+    {
+      "type": "wokwi-membrane-keypad",
+      "id": "keypad2",
+      "top": -892.69,
+      "left": 96.47,
+      "attrs": {
+        "keys": [ "T", "Y", "U", "I", "G", "H", "J", "K", "B", "N", "M", "O", "sp", "P", "L", "cr" ]
+      }
+    }
+  ],
+  "connections": [
+    [ "uno:GND.2", "lcd:GND", "black", [ "v14", "*", "h-20" ] ],
+    [ "uno:5V", "lcd:VCC", "red", [ "v18", "*", "h-16" ] ],
+    [ "uno:A4", "lcd:SDA", "green", [ "v22", "*", "h-12" ] ],
+    [ "uno:A5", "lcd:SCL", "blue", [ "v26", "*", "h-8" ] ],
+    [ "uno:GND.1", "btn1:2.l", "black", [ "v0" ] ],
+    [ "uno:2", "keypad1:R1", "#8f4814", [ "v-136.39", "h-84.92" ] ],
+    [ "uno:3", "keypad1:R2", "red", [ "v-144.93", "h-65.42" ] ],
+    [ "keypad1:R3", "uno:4", "orange", [ "v66.03", "h46.42" ] ],
+    [ "keypad1:R4", "uno:5", "gold", [ "v57.5", "h27.42" ] ],
+    [ "uno:6", "keypad1:C1", "green", [ "v-170.54", "h-8.42" ] ],
+    [ "uno:7", "keypad1:C2", "blue", [ "v-181.21", "h10.58" ] ],
+    [ "uno:8", "keypad1:C3", "violet", [ "v-190.81", "h36.33" ] ],
+    [ "uno:9", "keypad1:C4", "gray", [ "v-200.42", "h56.08" ] ],
+    [ "uno:10", "keypad2:C1", "green", [ "v-101.17", "h313.32" ] ],
+    [ "uno:11", "keypad2:C2", "blue", [ "v-93.7", "h332.32" ] ],
+    [ "uno:12", "keypad2:C3", "violet", [ "v-86.23", "h351.57" ] ],
+    [ "uno:13", "keypad2:C4", "gray", [ "v-77.7", "h370.82" ] ],
+    [ "keypad1:R4", "keypad2:R4", "gold", [ "v58.56", "h276.74" ] ],
+    [ "keypad1:R3", "keypad2:R3", "orange", [ "v67.1", "h276.74" ] ],
+    [ "keypad2:R2", "keypad1:R2", "red", [ "v72.73", "h-276.74" ] ],
+    [ "keypad1:R1", "keypad2:R1", "#8f4814", [ "v82.04", "h276.74" ] ]
+  ],
+  "dependencies": {}
+}
