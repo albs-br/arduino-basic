@@ -1,7 +1,5 @@
 // https://wokwi.com/projects/354195150222812161
 
-// test commit
-
 #include <LiquidCrystal_I2C.h>
 #include <Keypad.h>
 
@@ -49,18 +47,24 @@ const byte testButtonPins[] = { 10 };
 LiquidCrystal_I2C lcd(I2C_ADDR, LCD_COLUMNS, LCD_LINES);
 
 //byte testButtonPressed;
-
+byte  cursorX, cursorY;
+String currentLine = "";
 
 void setup() {
   Serial.begin(9600); // for debug purposes
 
   // docs: https://readthedocs.org/projects/arduinoliquidcrystal/downloads/pdf/latest/
   lcd.init();
+  //lcd.begin(20, 4);
   lcd.backlight();
   lcd.clear();
+  lcd.noAutoscroll();
+  lcd.display();
   //lcd.autoscroll();
   lcd.cursor();
   lcd.blink();
+
+  cursorX = 0; cursorY = 0;
 
   //lcd.setCursor(3, 0);
   //lcd.print("Hello, world!");
@@ -78,38 +82,58 @@ void setup() {
 
 void loop() {
 
+  lcd.setCursor(cursorX, cursorY);
+
+
   // read keyboard
   char key = keypadLeft.getKey();
+  if (key == NO_KEY) key = keypadRight.getKey();
+
   if (key != NO_KEY) {
     if (key == BACK_SPACE) {
-      lcd.print("bs");
+      if(cursorX > 0) cursorX--;
+      lcd.setCursor(cursorX, cursorY);
+      lcd.print(" ");
+    }
+    else if (key == ENTER) {
+      cursorX = 0; cursorY++;
+      lcd.setCursor(cursorX, cursorY);
+      lcd.print("");
+      
+      Serial.println(currentLine);
+      
+      ExecuteLine(currentLine);
+      currentLine = "";
     }
     else {
-      //lcd.print(key);
-      lcd.write(key);
+      if(cursorX < (LCD_COLUMNS - 1)) {
+        cursorX++;
+        lcd.print(key);
+        //lcd.write(key);
+        currentLine += key;
+      }
     }
 
-    Serial.print(key);
-  }
-  else {
-    key = keypadRight.getKey();
-    if (key != NO_KEY) {
-      if (key == BACK_SPACE) {
-        lcd.print("bs");
-      }
-      else {
-        //lcd.print(key);
-        lcd.write(key);
-      }
-
-      Serial.print(key);
-    }
+    //Serial.print(key);
   }
 
 
   //CheckTestButton();
 
   delay(10);
+}
+
+void ExecuteLine(String line) {
+  // line = trim(line);
+  if(line == "CLS") {
+    lcd.clear();
+    cursorX = 0; cursorY = 0;
+  }
+  else {
+    //lcd.setCursr(1, 1);
+    lcd.print("Syntax error");
+    cursorY++;
+  }
 }
 
 // void CheckTestButton() {
